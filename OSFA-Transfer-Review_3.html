@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Aid Marketing Transfer — Capacity Review</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+  :root{
+    --paper:#F3F1EB;
+    --panel:#FFFFFF;
+    --ink:#1B1D23;
+    --ink-soft:#4A4C55;
+    --hair:#DBD7CC;
+    --gold:#A6791F;
+    --gold-soft:#EFE3C8;
+    --rust:#A13D2B;
+    --rust-soft:#F3DFDA;
+    --green:#2F5233;
+    --green-soft:#DCE7DD;
+    --slate:#5B6270;
+    --slate-soft:#E3E4E8;
+    --serif: 'Montserrat', Georgia, 'Iowan Old Style', serif;
+    --sans: 'Montserrat', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+    --mono: 'Montserrat', 'SFMono-Regular', Consolas, monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  a{color:var(--gold); text-decoration:none;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+
+  .wrap{max-width:920px; margin:0 auto; padding:0 28px;}
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    padding:76px 0 56px;
+    border-bottom:1px solid var(--hair);
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:26px; height:1px; background:var(--gold);
+    display:inline-block;
+  }
+  h1.title{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(34px, 5vw, 52px);
+    line-height:1.08;
+    margin:0 0 20px;
+    letter-spacing:-0.01em;
+  }
+  .dek{
+    font-size:18px;
+    color:var(--ink-soft);
+    max-width:62ch;
+    margin:0 0 28px;
+  }
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:28px;
+    font-family:var(--mono); font-size:12.5px; color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:0.06em;
+  }
+  .meta-row strong{color:var(--ink); font-weight:600;}
+
+  /* ---------- STATUS DASHBOARD ---------- */
+  .dashboard{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--hair);
+    border:1px solid var(--hair);
+    margin:40px 0 0;
+  }
+  .dash-cell{
+    background:var(--panel);
+    padding:22px 20px;
+  }
+  .dash-num{
+    font-family:var(--serif);
+    font-size:36px;
+    font-weight:600;
+    line-height:1;
+  }
+  .dash-label{
+    font-family:var(--mono);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--ink-soft);
+    margin-top:8px;
+  }
+  .dash-num.rust{color:var(--rust);}
+  .dash-num.gold{color:var(--gold);}
+  .dash-num.slate{color:var(--slate);}
+  .dash-num.green{color:var(--green);}
+
+  @media (max-width:640px){
+    .dashboard{grid-template-columns:repeat(2,1fr);}
+  }
+
+  /* ---------- STICKY NAV ---------- */
+  nav.stepnav{
+    position:sticky; top:0; z-index:20;
+    background:rgba(243,241,235,0.94);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--hair);
+  }
+  nav.stepnav .wrap{
+    display:flex; gap:2px; overflow-x:auto;
+    padding-top:0; padding-bottom:0;
+  }
+  nav.stepnav a{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.04em;
+    color:var(--ink-soft);
+    white-space:nowrap;
+    padding:14px 14px;
+    border-bottom:2px solid transparent;
+  }
+  nav.stepnav a:hover{color:var(--ink); border-bottom-color:var(--hair);}
+  nav.stepnav a.current{color:var(--ink); border-bottom-color:var(--gold);}
+
+  /* ---------- STEP SECTIONS ---------- */
+  section.step{
+    padding:64px 0;
+    border-bottom:1px solid var(--hair);
+  }
+  section.step:last-of-type{border-bottom:none;}
+
+  .step-head{
+    display:flex;
+    gap:22px;
+    align-items:flex-start;
+    margin-bottom:30px;
+  }
+  .step-num{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--paper);
+    background:var(--ink);
+    width:40px; height:40px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    letter-spacing:0.02em;
+  }
+  .step-num.pending{background:var(--slate);}
+  h2.step-title{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:28px;
+    margin:2px 0 6px;
+  }
+  .step-sub{
+    color:var(--ink-soft);
+    font-size:15px;
+    max-width:66ch;
+  }
+
+  h3.sub{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:19px;
+    margin:38px 0 14px;
+  }
+  h3.sub:first-of-type{margin-top:0;}
+
+  p{margin:0 0 14px; max-width:70ch;}
+  p.note{
+    font-size:14px; color:var(--ink-soft);
+    border-left:2px solid var(--gold);
+    padding-left:14px;
+    margin:18px 0;
+  }
+
+  /* ---------- STAMPS ---------- */
+  .stamp{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    padding:4px 9px;
+    border:1.5px solid currentColor;
+    border-radius:3px;
+    transform:rotate(-1.2deg);
+    white-space:nowrap;
+  }
+  .stamp--open{color:var(--rust); background:var(--rust-soft);}
+  .stamp--confirmed{color:var(--green); background:var(--green-soft);}
+  .stamp--pending{color:var(--slate); background:var(--slate-soft);}
+  .stamp--placeholder{color:var(--gold); background:var(--gold-soft);}
+
+  /* ---------- TABLES ---------- */
+  .tbl-wrap{overflow-x:auto; margin:18px 0 30px;}
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--panel);
+    font-size:14.5px;
+  }
+  th{
+    font-family:var(--mono);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    text-align:left;
+    background:var(--ink);
+    color:var(--paper);
+    padding:10px 14px;
+  }
+  td{
+    padding:11px 14px;
+    border-bottom:1px solid var(--hair);
+    vertical-align:top;
+  }
+  tr:last-child td{border-bottom:none;}
+  td.strong{font-weight:600;}
+  td.tier-cell{white-space:nowrap;}
+
+  /* ---------- OWNERSHIP GRID ---------- */
+  .owner-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin:18px 0 30px;
+  }
+  @media (max-width:640px){.owner-grid{grid-template-columns:1fr;}}
+  .owner-card{
+    background:var(--panel);
+    border:1px solid var(--hair);
+    padding:18px 20px;
+  }
+  .owner-card h4{
+    font-family:var(--serif);
+    font-size:16px;
+    margin:0 0 8px;
+  }
+  .owner-tags{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;}
+  .tag{
+    font-family:var(--mono);
+    font-size:10.5px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    background:var(--slate-soft);
+    color:var(--slate);
+    padding:3px 8px;
+    border-radius:3px;
+  }
+  .tag--creative{background:#F5DFC8; color:#B75E1A;}
+  .tag--digital{background:#D7E9DA; color:#2C6B3B;}
+  .tag--am{background:#D7E3EE; color:#295C88;}
+  .tag--social{background:#F5D9E4; color:#B84B72;}
+  .tag--copy{background:#E5DCF0; color:#6B3FA0;}
+
+  .legend-dot--copy{background:#6B3FA0;}
+
+  .legend{display:flex; flex-wrap:wrap; gap:16px; margin:0 0 26px;}
+  .legend-item{display:flex; align-items:center; gap:7px; font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.04em;}
+  .legend-dot{width:10px; height:10px; border-radius:3px; display:inline-block;}
+  .legend-dot--creative{background:#B75E1A;}
+  .legend-dot--digital{background:#2C6B3B;}
+  .legend-dot--am{background:#295C88;}
+  .legend-dot--social{background:#B84B72;}
+  .legend-dot--other{background:var(--slate);}
+  .owner-card p{font-size:13.5px; color:var(--ink-soft); margin:0;}
+
+  /* ---------- QUESTIONS ---------- */
+  .qgroup{
+    background:var(--panel);
+    border:1px solid var(--hair);
+    margin-bottom:20px;
+  }
+  .qgroup-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 20px;
+    border-bottom:1px solid var(--hair);
+  }
+  .qgroup-head h4{
+    font-family:var(--serif);
+    font-size:17px;
+    margin:0;
+  }
+  .qgroup-head span.count{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+  ol.qlist{
+    margin:0; padding:16px 20px 18px 40px;
+  }
+  ol.qlist li{
+    padding:6px 0;
+    font-size:14.5px;
+  }
+
+  .fullog-cat{
+    background:var(--panel);
+    border:1px solid var(--hair);
+    margin-bottom:16px;
+  }
+  .fullog-cat h4{
+    font-family:var(--serif);
+    font-size:16.5px;
+    margin:0;
+    padding:14px 20px;
+    border-bottom:1px solid var(--hair);
+  }
+  .fullog-cat ol{
+    margin:0; padding:14px 20px 16px 38px;
+  }
+  .fullog-cat ol li{padding:5px 0; font-size:14.5px;}
+  .fullog-sub{padding:14px 20px 16px;}
+  .fullog-sub h5{
+    font-family:var(--mono);
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--gold);
+    margin:14px 0 6px;
+  }
+  .fullog-sub h5:first-child{margin-top:0;}
+  .fullog-sub ul{margin:0 0 4px; padding-left:20px;}
+  .fullog-sub ul li{font-size:14px; padding:3px 0; color:var(--ink-soft);}
+
+  /* ---------- CALENDAR COLLISION CALLOUT ---------- */
+  .callout{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 26px;
+    margin:28px 0;
+  }
+  .callout .stamp--open{background:transparent; border-color:var(--rust); color:#E8A79A;}
+  .callout h4{
+    font-family:var(--serif);
+    color:#fff;
+    font-size:18px;
+    margin:12px 0 10px;
+  }
+  .callout p{color:#D8D6CE; max-width:none; margin:0;}
+
+  /* ---------- STEP 5 PENDING PANEL ---------- */
+  .pending-panel{
+    border:1.5px dashed var(--slate);
+    padding:30px 26px;
+    background:repeating-linear-gradient(
+      135deg, rgba(91,98,112,0.04), rgba(91,98,112,0.04) 10px,
+      transparent 10px, transparent 20px
+    );
+  }
+  .pending-panel h4{
+    font-family:var(--serif);
+    font-size:19px;
+    margin:0 0 10px;
+  }
+  .scenario{
+    margin-top:22px;
+    padding-top:18px;
+    border-top:1px solid var(--hair);
+  }
+  .scenario h5{
+    font-family:var(--mono);
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--gold);
+    margin:0 0 6px;
+  }
+  .scenario p{font-size:14.5px;}
+  .cost-protect{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-top:10px;
+  }
+  @media (max-width:640px){.cost-protect{grid-template-columns:1fr;}}
+  .cp-box{padding:12px 14px; font-size:13.5px;}
+  .cp-box.protects{background:var(--green-soft); border-left:3px solid var(--green);}
+  .cp-box.costs{background:var(--rust-soft); border-left:3px solid var(--rust);}
+  .cp-box strong{
+    display:block;
+    font-family:var(--mono);
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin-bottom:5px;
+  }
+  .cp-box.protects strong{color:var(--green);}
+  .cp-box.costs strong{color:var(--rust);}
+
+  .recommended-panel{
+    background:var(--panel);
+    border:1.5px solid var(--green);
+    padding:30px 28px;
+    margin-bottom:32px;
+  }
+  .recommended-panel h4{
+    font-family:var(--serif);
+    font-size:21px;
+    margin:12px 0 12px;
+  }
+  .rec-step{
+    display:flex;
+    gap:12px;
+    margin:14px 0;
+    align-items:flex-start;
+  }
+  .rec-step-num{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:600;
+    color:#fff;
+    background:var(--green);
+    width:24px; height:24px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    margin-top:2px;
+  }
+  .rec-step p{margin:0; font-size:14.5px;}
+
+  footer{
+    padding:40px 0 60px;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+  }
+
+  /* fade-in on view */
+  .step{opacity:0; transform:translateY(14px); animation:rise 0.6s ease forwards;}
+  @keyframes rise{to{opacity:1; transform:translateY(0);}}
+
+  @media print{
+    nav.stepnav{display:none;}
+    .step{animation:none; opacity:1; transform:none;}
+    section.step{break-inside:avoid; padding:28px 0;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">A&amp;F Division Marketing &middot; Working Review</div>
+    <h1 class="title">Financial Aid Marketing Transfer<br>Capacity Review</h1>
+    <p class="dek">A working map of what the CBO's directive to absorb Office of Student Financial Aid marketing actually requires — scope, ownership, open questions, and workload — built in stages before a final recommendation is brought forward.</p>
+    <div class="meta-row">
+      <span>Status: <strong>Living document</strong></span>
+      <span>Prepared by: <strong>A&amp;F Division Marketing Team</strong></span>
+      <span>Steps complete: <strong>4 of 5</strong></span>
+    </div>
+
+    <div class="dashboard">
+      <div class="dash-cell">
+        <div class="dash-num rust">32</div>
+        <div class="dash-label">Open Questions</div>
+      </div>
+      <div class="dash-cell">
+        <div class="dash-num gold">2</div>
+        <div class="dash-label">Placeholder Tier Ratings</div>
+      </div>
+      <div class="dash-cell">
+        <div class="dash-num slate">1</div>
+        <div class="dash-label">Decision Pending Above Us</div>
+      </div>
+      <div class="dash-cell">
+        <div class="dash-num green">3</div>
+        <div class="dash-label">Full Campaigns Mapped</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="stepnav">
+  <div class="wrap">
+    <a href="#step1">01 — Responsibility Map</a>
+    <a href="#step2">02 — Ownership</a>
+    <a href="#step3">03 — Open Questions</a>
+    <a href="#step4">04 — Workload &amp; Tiers</a>
+    <a href="#step5">05 — Recommendation</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- STEP 1 -->
+  <section class="step" id="step1">
+    <div class="step-head">
+      <div class="step-num">01</div>
+      <div>
+        <h2 class="step-title">Responsibility Map</h2>
+        <p class="step-sub">Every deliverable and responsibility listed for the OSFA account transfer, organized as it was originally scoped by leadership.</p>
+      </div>
+    </div>
+
+    <h3 class="sub">Named OSFA Campaigns &amp; Deliverables</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Format / Channels</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>2026 Cost Worksheet In-State/OOS</td><td>Print + digital</td><td>Single deliverable</td></tr>
+          <tr><td>2026–2027 Additional Loan Comms</td><td>Email + text</td><td>Ongoing / ad hoc (HOPE cap, end-of-term, etc.)</td></tr>
+          <tr><td>2026 Financial Aid Basics Update</td><td>Print + digital</td><td>Single deliverable</td></tr>
+          <tr><td>2027–2028 FAFSA Guide</td><td>Print + digital</td><td>Single deliverable</td></tr>
+          <tr><td class="strong">2027–2028 FAFSA Campaign</td><td>Email, text, social, promo items, print advertising, printed items</td><td class="strong">Full campaign</td></tr>
+          <tr><td>2026 TEACH Grant Program Flyer</td><td>Digital only</td><td>Single deliverable</td></tr>
+          <tr><td>2026 HOPE &amp; Zell Miller Checklist</td><td>Print + digital</td><td>Single deliverable</td></tr>
+          <tr><td class="strong">2027–2028 Scholarship Universe Campaign</td><td>Email, text, social, printed items, digital</td><td class="strong">Full campaign</td></tr>
+          <tr><td class="strong">2027–2028 Verification Campaign</td><td>Email, text, social, printed items, digital</td><td class="strong">Full campaign</td></tr>
+          <tr><td>2027 Orientation One Sheeter</td><td>Print + digital</td><td>Single deliverable</td></tr>
+          <tr><td>2027 Scholarship Universe Handbooks</td><td>Digital only</td><td>Single deliverable</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub">Ongoing Communications</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Ad-hoc emails and texts</td><td>Unscheduled, reactive</td></tr>
+          <tr><td>Email drip campaigns</td><td>Recurring, sequenced</td></tr>
+          <tr><td>Text drip campaigns</td><td>Recurring, sequenced</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub">Print / Digital Production</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Item</th></tr></thead>
+        <tbody>
+          <tr><td>Flyers</td></tr>
+          <tr><td>Brochures</td></tr>
+          <tr><td>Booklets</td></tr>
+          <tr><td>Mailers</td></tr>
+          <tr><td>Digital documents</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub">On-Campus Advertising</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Big Owl Bus Internal</td><td>Design + install coordination</td></tr>
+          <tr><td>Bus Shelter</td><td>Design + install coordination</td></tr>
+          <tr><td>Napkin Holders</td><td>Design + install coordination</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub">Promotional Items / Merch &amp; Website</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Promo item ordering</td><td>Existing Halo vendor relationship</td></tr>
+          <tr><td>Website updates</td><td>Reactive only, per current model — errors or new asset versions</td></tr>
+          <tr><td>Kennesaw.edu homepage block</td><td>Coordinated with Strat Comm, tied to comm plans or deadlines</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub">Social Media</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Channel</th><th>Current Status</th></tr></thead>
+        <tbody>
+          <tr><td>ksuadmit — Facebook</td><td>Currently managed by ESComm</td></tr>
+          <tr><td>ksu_admissions / ksuinfo — Instagram</td><td>Currently managed by ESComm</td></tr>
+          <tr><td>ZeeMee</td><td>Currently managed by ESComm</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">This account currently sits with ESComm, not with Financial Aid directly — the transfer moves it from ESComm to the A&amp;F Division Marketing Team. Whether the team inherits full ownership of these channels or only the FinAid content within them is unresolved. See Question 19.</p>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step" id="step2">
+    <div class="step-head">
+      <div class="step-num">02</div>
+      <div>
+        <h2 class="step-title">Ownership Assignment</h2>
+        <p class="step-sub">A first-pass mapping of every responsibility above to the function that would own it: Digital, Creative, Copy, Social, an Account Manager, or the Financial Aid office itself.</p>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span class="legend-item"><span class="legend-dot legend-dot--creative"></span>Creative</span>
+      <span class="legend-item"><span class="legend-dot legend-dot--digital"></span>Digital</span>
+      <span class="legend-item"><span class="legend-dot legend-dot--am"></span>Account Manager</span>
+      <span class="legend-item"><span class="legend-dot legend-dot--social"></span>Social</span>
+      <span class="legend-item"><span class="legend-dot legend-dot--copy"></span>Copy</span>
+      <span class="legend-item"><span class="legend-dot legend-dot--other"></span>FinAid / Strat Comm</span>
+    </div>
+
+    <div class="owner-grid">
+      <div class="owner-card">
+        <h4>Named Campaigns — Single Deliverables</h4>
+        <div class="owner-tags"><span class="tag tag--copy">Copy</span><span class="tag tag--creative">Creative</span><span class="tag tag--digital">Digital</span></div>
+        <p>Cost Worksheet, Basics Update, FAFSA Guide, TEACH Flyer, HOPE/Zell Miller Checklist, Orientation Sheeter, Scholarship Universe Handbooks.</p>
+      </div>
+      <div class="owner-card">
+        <h4>Named Campaigns — Full Campaigns</h4>
+        <div class="owner-tags"><span class="tag tag--digital">Digital</span><span class="tag tag--creative">Creative</span><span class="tag tag--copy">Copy</span><span class="tag tag--social">Social</span></div>
+        <p>FAFSA Campaign, Scholarship Universe Campaign, Verification Campaign — every function touches these.</p>
+      </div>
+      <div class="owner-card">
+        <h4>Ongoing Comms (incl. emails and texts)</h4>
+        <div class="owner-tags"><span class="tag tag--digital">Digital</span><span class="tag tag--copy">Copy</span><span class="tag">FinAid</span></div>
+        <p>Texts are explicitly Digital-owned — send list logic and triggers haven't been broken out yet, so ownership defaults to Digital rather than staying ambiguous.</p>
+      </div>
+      <div class="owner-card">
+        <h4>Print / Digital Production</h4>
+        <div class="owner-tags"><span class="tag tag--creative">Creative</span><span class="tag tag--copy">Copy</span><span class="tag tag--digital">Digital</span></div>
+        <p>Flyers, brochures, booklets, mailers, digital docs — Creative designs, Copy writes, Digital handles digital-native versions.</p>
+      </div>
+      <div class="owner-card">
+        <h4>On-Campus Advertising</h4>
+        <div class="owner-tags"><span class="tag tag--creative">Creative</span><span class="tag tag--copy">Copy</span><span class="tag tag--am">AM / Vendor</span></div>
+        <p>Bus internal, bus shelter, napkin holders — Creative designs, Copy writes the ad copy, install coordination sits with the Account Manager or vendor.</p>
+      </div>
+      <div class="owner-card">
+        <h4>Promo / Merch</h4>
+        <div class="owner-tags"><span class="tag tag--am">AM</span><span class="tag tag--creative">Creative</span></div>
+        <p>Account Manager owns the Halo vendor relationship and ordering; Creative supplies design files.</p>
+      </div>
+      <div class="owner-card">
+        <h4>Website &amp; Homepage</h4>
+        <div class="owner-tags"><span class="tag tag--digital">Digital</span><span class="tag tag--copy">Copy</span><span class="tag">Strat Comm</span></div>
+        <p>Reactive web updates sit with Digital, Copy provides page content. The homepage announcement block is coordinated with Strat Comm.</p>
+      </div>
+      <div class="owner-card">
+        <h4>Social Media</h4>
+        <div class="owner-tags"><span class="tag tag--social">Social</span><span class="tag tag--digital">Digital</span><span class="tag stamp--placeholder" style="background:var(--gold-soft); color:var(--gold);">Scope Pending</span></div>
+        <p>Ownership sits with Social — but what "the account" actually includes won't be settled until Question 19 is answered.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="step" id="step3">
+    <div class="step-head">
+      <div class="step-num">03</div>
+      <div>
+        <h2 class="step-title">Open Questions</h2>
+        <p class="step-sub">The full working list of what's still unknown before this transfer can be planned with real numbers instead of estimates.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="stamp stamp--confirmed">Confirmed</span>
+      <h4>Account Manager Reshuffle — Status</h4>
+      <p>Confirmed as of this review: the proposed AM reshuffle is <strong>open, pending the findings of this analysis</strong>. It should not be treated as a finalized decision by anyone reading this document.</p>
+    </div>
+
+    <h3 class="sub" style="margin-top:8px;">Full Question Log</h3>
+    <p class="step-sub" style="margin-bottom:22px;">Organized by topic. Each of these needs an answer from ESComm, Financial Aid, or Leadership before Step 5 can be finalized.</p>
+
+    <div class="fullog-cat">
+      <h4>Scope</h4>
+      <ol start="1">
+        <li>What exactly does "take over Financial Aid marketing" mean?</li>
+        <li>Are we assuming all responsibilities shown in this document?</li>
+        <li>Does this include strategy, or only execution?</li>
+        <li>Does it include content development?</li>
+        <li>Does it include campaign and project management?</li>
+        <li>Does it include analytics and reporting?</li>
+        <li>Who holds final sign-off authority on FinAid content — us, or FinAid?</li>
+      </ol>
+    </div>
+
+    <div class="fullog-cat">
+      <h4>Current State</h4>
+      <ol start="8">
+        <li>Who currently performs each responsibility?</li>
+        <li>How many staff/FTE are currently involved?</li>
+        <li>How much time does Financial Aid currently spend managing this work?</li>
+        <li>What vendors or internal partners are currently involved?</li>
+        <li>What happens to FinAid's current staff/FTE — reassigned, reduced, or retained in a liaison capacity?</li>
+      </ol>
+    </div>
+
+    <div class="fullog-cat">
+      <h4>Email / SMS</h4>
+      <ol start="13">
+        <li>How many emails were sent in FY26?</li>
+        <li>How many texts?</li>
+        <li>How many drip campaigns?</li>
+        <li>How many ad hoc requests?</li>
+        <li>What are the current SLAs?</li>
+        <li>Who builds and QAs FinAid's emails today — is there an existing workflow we'd inherit as-is, or are we building one from scratch?</li>
+      </ol>
+    </div>
+
+    <div class="fullog-cat">
+      <h4>Social</h4>
+      <ol start="19">
+        <li>Are we inheriting all four social accounts, or only supplementing content on them?</li>
+        <li>What is the expected posting frequency?</li>
+        <li>Who currently creates the content?</li>
+        <li>Are we expected to grow these accounts, or simply maintain them?</li>
+      </ol>
+    </div>
+
+    <div class="fullog-cat">
+      <h4>Web</h4>
+      <ol start="23">
+        <li>Are we responsible for proactive website management, or only requested updates?</li>
+        <li>Who provides and approves content?</li>
+        <li>How many pages are involved?</li>
+      </ol>
+    </div>
+
+    <div class="fullog-cat">
+      <h4>Creative / Print</h4>
+      <ol start="26">
+        <li>Does our team own production, or only coordinate with Creative?</li>
+        <li>Who pays for printing?</li>
+        <li>Who manages vendors?</li>
+        <li>Who manages promotional items?</li>
+      </ol>
+    </div>
+
+    <div class="fullog-cat">
+      <h4>Resources</h4>
+      <ol start="30">
+        <li>What budget is moving with the work?</li>
+        <li>What positions/resources are moving with the work?</li>
+        <li>What existing work is being removed from our team's portfolio to make room?</li>
+      </ol>
+    </div>
+
+    <h3 class="sub" style="margin-top:48px;">Financial Aid's Current Volume</h3>
+    <p class="step-sub" style="margin-bottom:22px;">The specific volume data needed to move from estimated tiers to confirmed ones in Step 4.</p>
+    <div class="fullog-cat">
+      <div class="fullog-sub">
+        <h5>Email</h5>
+        <ul>
+          <li>How many emails were sent in FY26?</li>
+          <li>How many unique campaigns did they represent?</li>
+          <li>How many were automated/drip campaigns?</li>
+        </ul>
+        <h5>SMS</h5>
+        <ul>
+          <li>How many texts were sent?</li>
+          <li>How many were automated campaigns?</li>
+        </ul>
+        <h5>Social</h5>
+        <ul>
+          <li>How many posts?</li>
+          <li>How many stories?</li>
+          <li>Which platforms?</li>
+          <li>Who creates the content today?</li>
+        </ul>
+        <h5>Web</h5>
+        <ul>
+          <li>How many Financial Aid pages exist?</li>
+          <li>How frequently are they updated?</li>
+          <li>Is ESComm proactively monitoring them, or responding only to requests?</li>
+        </ul>
+        <h5>Creative</h5>
+        <ul>
+          <li>How many flyers, brochures, booklets, and mailers per year?</li>
+          <li>How many ads?</li>
+          <li>How many handbooks?</li>
+        </ul>
+        <h5>Campaigns</h5>
+        <ul>
+          <li>How many campaigns run per year?</li>
+          <li>How many deliverables per campaign?</li>
+          <li>How many rounds of revisions, typically?</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="step" id="step4">
+    <div class="step-head">
+      <div class="step-num">04</div>
+      <div>
+        <h2 class="step-title">Workload &amp; Tier Framework</h2>
+        <p class="step-sub">Every OSFA deliverable classified against the team's existing Project Tier System — the same framework already governing every other account, applied here rather than inventing new rules for this one.</p>
+      </div>
+    </div>
+
+    <h3 class="sub">Tier Reference</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Tier</th><th>Asset Count</th><th>Timeline</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>3 or fewer</td><td>2 weeks</td></tr>
+          <tr><td>2</td><td>4 – 9</td><td>3 – 5 weeks</td></tr>
+          <tr><td>3</td><td>10 – 19</td><td>8 – 12 weeks</td></tr>
+          <tr><td>4</td><td>20+</td><td>4 – 6 months</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub">OSFA Deliverables, Classified</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Tier</th><th>Timeline</th></tr></thead>
+        <tbody>
+          <tr><td>Cost Worksheet In-State/OOS</td><td class="tier-cell">1</td><td>2 weeks</td></tr>
+          <tr><td>Financial Aid Basics Update</td><td class="tier-cell">1</td><td>2 weeks</td></tr>
+          <tr><td>FAFSA Guide</td><td class="tier-cell">2</td><td>3 – 5 weeks</td></tr>
+          <tr><td>TEACH Grant Flyer</td><td class="tier-cell">1</td><td>2 weeks</td></tr>
+          <tr><td>HOPE &amp; Zell Miller Checklist</td><td class="tier-cell">1</td><td>2 weeks</td></tr>
+          <tr><td>Orientation One Sheeter</td><td class="tier-cell">1</td><td>2 weeks</td></tr>
+          <tr><td>Scholarship Universe Handbooks</td><td class="tier-cell">1</td><td>2 weeks</td></tr>
+          <tr><td class="strong">FAFSA Campaign</td><td class="tier-cell strong">4</td><td class="strong">4 – 6 months</td></tr>
+          <tr><td class="strong">Scholarship Universe Campaign</td><td class="tier-cell strong">3</td><td>8 – 12 weeks</td></tr>
+          <tr><td class="strong">Verification Campaign</td><td class="tier-cell strong">3</td><td>8 – 12 weeks</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Scholarship Universe and Verification are held at Tier 3 as working placeholders pending more information on FinAid's actual timelines and asset needs for each. They are not confirmed.</p>
+
+    <div class="callout">
+      <span class="stamp stamp--open">Flag</span>
+      <h4>Calendar Collision Risk</h4>
+      <p>The team's own SLA guidelines state that designers are assigned limited concurrent projects, and that Tier 3/4 work requires dedicated meetings and multi-month timelines. The FAFSA Campaign alone is a confirmed Tier 4 — the same institutional weight as Move-In, Meal Plan campaigns, Housing Application, or the A&amp;F Awards. If it lands during the same window as any of the team's existing Tier 3/4 commitments, that is a scheduling conflict under the team's own operating rules, not a hypothetical capacity concern.</p>
+    </div>
+
+    <p class="note">Separately: the EDMC Review Guideline lists specific campaign types requiring executive visibility (Meal Plan sales, permit sales, Move-In, and any project over $1,000). If OSFA's full campaigns involve meaningful spend, they likely belong on that review list as well — another touchpoint not yet accounted for.</p>
+  </section>
+
+  <!-- STEP 5 -->
+  <section class="step" id="step5">
+    <div class="step-head">
+      <div class="step-num pending">05</div>
+      <div>
+        <h2 class="step-title">Recommendation</h2>
+        <p class="step-sub"><span class="stamp stamp--placeholder">Draft</span> &nbsp;Directional recommendation below — final confirmation awaits the open data in Step 3.</p>
+      </div>
+    </div>
+
+    <div class="recommended-panel">
+      <span class="stamp stamp--confirmed">Recommended Path</span>
+      <h4>Phased Rollout with a Targeted Offset</h4>
+      <p>Rather than choosing among three trade-offs with no clear direction, this is the specific path the A&amp;F Division Marketing Team recommends — built from the tier data in Step 4 and structured so the hardest work doesn't start until real capacity exists for it.</p>
+
+      <div class="rec-step">
+        <div class="rec-step-num">1</div>
+        <p><strong>Tier 1 &amp; 2 items start first.</strong> The single deliverables (Cost Worksheet, Basics Update, FAFSA Guide, TEACH Flyer, HOPE/Zell Miller Checklist, Orientation Sheeter, Scholarship Universe Handbooks) carry low complexity and short timelines — this is where the team builds working process with FinAid at low risk.</p>
+      </div>
+      <div class="rec-step">
+        <div class="rec-step-num">2</div>
+        <p><strong>The FAFSA Campaign (confirmed Tier 4) does not begin until a specific capacity offset is identified and confirmed.</strong> This directly addresses the single biggest collision risk flagged in Step 4 — a Tier 4 campaign cannot start against a team that's already fully booked.</p>
+      </div>
+      <div class="rec-step">
+        <div class="rec-step-num">3</div>
+        <p><strong>Scholarship Universe and Verification (placeholder Tier 3) are scheduled once real volume and timeline data comes back</strong> from ESComm and Financial Aid, rather than being locked in against a guess.</p>
+      </div>
+
+      <div class="cost-protect">
+        <div class="cp-box protects">
+          <strong>What this protects</strong>
+          Current accounts don't degrade on day one, and the team isn't absorbing a Tier 4 campaign with zero new capacity behind it.
+        </div>
+        <div class="cp-box costs">
+          <strong>What this costs</strong>
+          A slower full rollout — OSFA won't have all three campaigns live in year one, and the FAFSA Campaign's start date depends on an offset that hasn't been identified yet.
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub">Alternative Scenarios</h3>
+    <p class="step-sub" style="margin-bottom:18px;">If the recommended path above isn't workable, here's how the other options compare — each is a real trade-off, not a hidden one.</p>
+
+    <div class="pending-panel">
+      <div class="scenario" style="margin-top:0; padding-top:0; border-top:none;">
+        <h5>Scenario A — Full Addition, No Offset</h5>
+        <p>OSFA's full scope is added with nothing removed from current accounts and no additional FTE. This is the default outcome if no decision is made.</p>
+        <div class="cost-protect">
+          <div class="cp-box protects"><strong>What this protects</strong>All three campaigns launch on their original timeline with no delay.</div>
+          <div class="cp-box costs"><strong>What this costs</strong>Existing high-volume accounts see slower turnaround. The FAFSA Campaign (Tier 4) directly collides with the team's existing Tier 3/4 commitments.</div>
+        </div>
+      </div>
+      <div class="scenario">
+        <h5>Scenario B — Partial Offset</h5>
+        <p>A specific existing account or deliverable is reduced, reassigned, or moved to a lower cadence to make room — decided deliberately rather than absorbed as quality drift.</p>
+        <div class="cost-protect">
+          <div class="cp-box protects"><strong>What this protects</strong>The team's existing calendar mostly holds, since new capacity is created on purpose instead of borrowed silently.</div>
+          <div class="cp-box costs"><strong>What this costs</strong>A named account or deliverable takes a real, visible cut — someone outside this team feels the trade-off directly.</div>
+        </div>
+      </div>
+      <div class="scenario">
+        <h5>Scenario C — Phased With Conditions</h5>
+        <p>Rollout follows the phase order in this document — low-complexity items first, full campaigns last — with each phase gated on a specific condition rather than a calendar date alone.</p>
+        <div class="cost-protect">
+          <div class="cp-box protects"><strong>What this protects</strong>No existing work needs to be cut, and the team builds tested process before tackling the hardest campaigns.</div>
+          <div class="cp-box costs"><strong>What this costs</strong>Slower full rollout with no named offset — unlike the recommended path, nothing specific is created to absorb the FAFSA Campaign's weight.</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="note" style="margin-top:22px;">This recommendation is directional. It becomes final once the open questions in Step 3 — particularly the social ownership question and real ESComm volume data — are answered.</p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    A&amp;F Division Marketing Team &middot; Working Review, Updated Continuously &middot; Not a Final Decision Document
+  </div>
+</footer>
+
+<script>
+  const links = document.querySelectorAll('nav.stepnav a');
+  const sections = document.querySelectorAll('section.step');
+  const setCurrent = () => {
+    let current = sections[0].id;
+    sections.forEach(s => {
+      if (window.scrollY + 100 >= s.offsetTop) current = s.id;
+    });
+    links.forEach(l => l.classList.toggle('current', l.getAttribute('href') === '#' + current));
+  };
+  window.addEventListener('scroll', setCurrent);
+  setCurrent();
+</script>
+
+</body>
+</html>
